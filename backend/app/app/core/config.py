@@ -35,7 +35,7 @@ class ModeEnum(str, Enum):
     testing = "testing"
 
 
-class Settings(BaseSettings, extra='ignore'):
+class Settings(BaseSettings, extra="ignore"):
     PROJECT_NAME: str = "app"
     BACKEND_CORS_ORIGINS: list[str] | list[AnyHttpUrl]
     MODE: ModeEnum = ModeEnum.development
@@ -43,10 +43,10 @@ class Settings(BaseSettings, extra='ignore'):
     API_V1_STR: str = f"/api/{API_VERSION}"
     WHEATER_URL: str = "https://wttr.in"
 
-    
     class Config:
         case_sensitive = True
         env_file = os.path.expanduser("../../.env")
+
 
 # <UserAuthConfigSnippet>
 class Graph:
@@ -60,17 +60,21 @@ class Graph:
         # tenant_id = self.settings['tenantId']
         # clientSecret = self.settings['clientSecret']
         # graph_scopes = self.settings['graphUserScopes'].split(' ')
-        graph_scopes = graph_scopes.split(',')
+        graph_scopes = graph_scopes.split(",")
         # self.device_code_credential = ClientSecretCredential(tenant_id, client_id, clientSecret)
-        self.device_code_credential = DeviceCodeCredential(client_id, tenant_id = tenant_id)
+        self.device_code_credential = DeviceCodeCredential(
+            client_id, tenant_id=tenant_id
+        )
         self.user_client = GraphServiceClient(self.device_code_credential, graph_scopes)
-# </UserAuthConfigSnippet>
+
+    # </UserAuthConfigSnippet>
 
     # <GetUserTokenSnippet>
     async def get_user_token(self):
-        graph_scopes = self.settings['graphUserScopes']
+        graph_scopes = self.settings["graphUserScopes"]
         access_token = self.device_code_credential.get_token(graph_scopes)
         return access_token.token
+
     # </GetUserTokenSnippet>
 
     # <GetUserSnippet>
@@ -80,17 +84,19 @@ class Graph:
         """
         # Only request specific properties using $select
         query_params = UserItemRequestBuilder.UserItemRequestBuilderGetQueryParameters(
-            select=['displayName', 'mail', 'userPrincipalName']
+            select=["displayName", "mail", "userPrincipalName"]
         )
 
-        request_config = UserItemRequestBuilder.UserItemRequestBuilderGetRequestConfiguration(
-            query_parameters=query_params
+        request_config = (
+            UserItemRequestBuilder.UserItemRequestBuilderGetRequestConfiguration(
+                query_parameters=query_params
+            )
         )
 
         user = await self.user_client.me.get(request_configuration=request_config)
         return user
-    # </GetUserSnippet>
 
+    # </GetUserSnippet>
 
     # <MakeGraphCallSnippet>
     async def list_files(self):
@@ -102,49 +108,56 @@ class Graph:
             print("____________-")
             result = {"success": False}
             # List all children in root of the one drive
-            items = await self.user_client.drives.by_drive_id(DRIVE_ID).items.by_drive_item_id('root').children.get()
+            items = (
+                await self.user_client.drives.by_drive_id(DRIVE_ID)
+                .items.by_drive_item_id("root")
+                .children.get()
+            )
             if items and items.value:
                 for item in items.value:
                     print(item.id, item.name, item.size, item.folder, item.file)
 
-            # Convert result3 to JSON
-                result_json = json.dumps([{
-                    'name': each.name,
-                    'id': each.id,
-                    'web_url': each.web_url
-                } for each in items.value], indent=4)
-            # return result_json
-                result = [{
-                        'name': each.name,
-                        'id': each.id,
-                        'web_url': each.web_url
-                    } for each in items.value]
+                # Convert result3 to JSON
+                result_json = json.dumps(
+                    [
+                        {"name": each.name, "id": each.id, "web_url": each.web_url}
+                        for each in items.value
+                    ],
+                    indent=4,
+                )
+                # return result_json
+                result = [
+                    {"name": each.name, "id": each.id, "web_url": each.web_url}
+                    for each in items.value
+                ]
             return {"success": True, "data": result}
-        
+
         except Exception as e:
             print(f"Error: {e}")
             return None
-    # </MakeGraphCallSnippet>
 
+    # </MakeGraphCallSnippet>
 
     async def download_files(self, item_id: str = None):
         """
         Documentation -
-        Returns a 302 Found response redirecting to a preauthenticated download URL for the file, 
+        Returns a 302 Found response redirecting to a preauthenticated download URL for the file,
         which is the same URL available through the @microsoft.graph.downloadUrl property on the DriveItem.
-        To download the contents of the file your application needs to follow the Location header in the response. 
+        To download the contents of the file your application needs to follow the Location header in the response.
         Many HTTP client libraries will automatically follow the 302 redirection and start downloading the file immediately.
         """
         try:
-            result = await self.user_client.drives.by_drive_id(DRIVE_ID).items.by_drive_item_id(item_id).content.get()
+            result = (
+                await self.user_client.drives.by_drive_id(DRIVE_ID)
+                .items.by_drive_item_id(item_id)
+                .content.get()
+            )
             print(result)
             return result
         except Exception as e:
             print(f"Error: {e}")
             return None
-        
 
-    
     async def list_permissions(self, item_id: str = None):
         """
         This function is used to list all permissions of the file specified
@@ -168,18 +181,39 @@ class Graph:
         # # return result_json
         try:
             # Fetch permissions of the specified item
-            permissions = await self.user_client.drives.by_drive_id(DRIVE_ID).items.by_drive_item_id(item_id).permissions.get()
-            
+            permissions = (
+                await self.user_client.drives.by_drive_id(DRIVE_ID)
+                .items.by_drive_item_id(item_id)
+                .permissions.get()
+            )
+            extracted_permissions = [
+                {
+                    "roles": each.roles,
+                    "id": each.id,
+                    "granted_to": (
+                        each.granted_to.user.display_name
+                        if each.granted_to and each.granted_to.user
+                        else ""
+                    ),
+                    "granted_to_email": (
+                        each.granted_to.user.additional_data.get("email")
+                        if each.granted_to
+                        and each.granted_to.user
+                        and each.granted_to.user.additional_data
+                        and each.granted_to.user.additional_data.get("email")
+                        else ""
+                    ),
+                }
+                for each in permissions.value
+            ]
             # Extract role, id, and username from the permissions
-            extracted_permissions = []
-            
-            return permissions.value
+
+            return extracted_permissions
 
         except Exception as e:
             print(f"Error: {e}")
             return None
-        
- 
+
     async def create_subscription(self):
         """
         This function is used to register a webhook
