@@ -45,6 +45,7 @@ requests = "^2.32.3"
 msal = "^1.28.1"
 msgraph-sdk = "^1.4.0"
 azure-identity = "^1.16.1"
+uvicorn = "0.30.1"
 
 [tool.ruff.per-file-ignores]
 "__init__.py" = [ "F401",]

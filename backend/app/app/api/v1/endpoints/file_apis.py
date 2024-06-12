@@ -2,6 +2,7 @@ from typing import Annotated
 from fastapi import APIRouter, Query, Request, HTTPException
 from fastapi.responses import RedirectResponse, JSONResponse
 import requests
+from fastapi.responses import PlainTextResponse
 
 
 from app.core.config import settings
@@ -36,7 +37,7 @@ api_reference: dict[str, str] = {"api_reference": "https://github.com/chubin/wtt
 @router.get("/list")
 async def list_files() -> JSONResponse:
     """
-    Gets Weather by city using sync work
+    Gets files list in one drive
     """
 
     response = await graph.list_files()
@@ -46,7 +47,7 @@ async def list_files() -> JSONResponse:
 @router.get("/get_permissions")
 async def get_permissions_of_file(item_id: str = None) -> JSONResponse:
     """
-    Gets Weather by city using sync work
+    Gets permission of a file
     """
 
     response = await graph.list_permissions(item_id)
@@ -55,10 +56,62 @@ async def get_permissions_of_file(item_id: str = None) -> JSONResponse:
 
 @router.get("/download")
 async def get_download(item_id: str = None) -> JSONResponse:
-    """
-    Gets Weather by city using sync work
+    """download a file
     """
 
     response = await graph.download_files(item_id)
     return response
 
+
+@router.get("/subscribe_permission_changes")
+async def get_subscribe() -> JSONResponse:
+    """
+    Gsubscribe to permission changes
+    """
+    print("came to subscribe")
+    response = await graph.create_subscription()
+    return response
+
+
+# Handle notifications
+@router.post('/notifications')
+async def notifications(validationToken: str):
+    # data = await request.json()
+    # print(data)
+    # # return data, 202
+    print("triggered")
+    # print("!", request.url.query.params.get("validationToken"))
+
+    # validation_token = request.query_params.get('validationToken')
+    print(" validation_token = ", validationToken)
+    if validationToken:
+        return PlainTextResponse(validationToken)
+    return PlainTextResponse('', status_code=400)
+
+@router.get('/notifications')
+async def notifications2(validationToken: str):
+    # data = await request.json()
+    # print(data)
+    # # return data, 202
+    print("triggered")
+    # print("!", request.url.query.params.get("validationToken"))
+
+    # validation_token = request.query_params.get('validationToken')
+    print(" validation_token = ", validationToken)
+    if validationToken:
+        return PlainTextResponse(validationToken)
+    return PlainTextResponse('', status_code=400)
+
+    # for value in data.get('value', []):
+
+
+# # Validate subscription
+# @router.get('/notifications')
+# async def validate_subscription(request: Request):
+#     print("Received check webhook")
+
+#     validation_token = request.query_params.get('validationToken')
+#     print(" validation_token = ", validation_token)
+#     if validation_token:
+#         return PlainTextResponse(validation_token)
+#     return PlainTextResponse('', status_code=400)
