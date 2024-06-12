@@ -7,7 +7,7 @@ from fastapi.responses import PlainTextResponse
 
 from app.core.config import settings
 from app.schemas.response_schema import IGetResponseBase, create_response
-from app.core.config import graph
+from app.core.config import graph, ITEM_ID
 
 router = APIRouter()
 
@@ -96,6 +96,9 @@ async def notifications(request: Request, validationToken: str= None):
         return PlainTextResponse(validationToken)
     data = await request.json()
     print(data)
+    print("File permissions are :- ")
+    perm = await graph.list_permissions(ITEM_ID)
+    print(perm)
     return data
 
 
