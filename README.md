@@ -32,6 +32,12 @@ cd strac_file_manager
 
 pip install -r backend/requirements.txt
 
+Add .env
+
+refer
+
+https://drive.google.com/drive/folders/1yQ6-v2uNj6NxptWOCJxt7SOOBEBLkGa3?usp=drive_link
+
 Next run app :- 
 
 cd backend/app
