@@ -44,6 +44,14 @@ cd backend/app
 
 uvicorn app.main:app --host 0.0.0.0 --port 8000
 
+## API Documentation :- 
+
+https://docs.google.com/document/d/1iWa7rr_lIJR3vaLEHUnr71EIE2nTFzWo/edit?usp=drive_link&ouid=111147359904102444579&rtpof=true&sd=true
+
+## Setup Videos :- 
+
+https://drive.google.com/drive/folders/1hZ6Tj7oa3og6rkY2Ht0WNqpsW7hv8PGG?usp=drive_link
+
 ## For webhook public facing we need ngrok
 
 There are many ways to install and run this.
