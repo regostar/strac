@@ -24,18 +24,6 @@ The commands in this documentation can be customized on the **Makefile**. It can
 
 This project uses poetry, if you don't have it installed, you can the follow the instruction in [Poetry Documentation](https://python-poetry.org/docs/#installation).
 
-- Run the server (Recommended using docker):
-
-```bash
-# Run locally with docker in dev mode and force build
-make run-dev-build
-# or
-# Run locally with docker in dev mode
-make run-dev
-# or
-# Run locally with docker in prod mode (Autorelod disabled)
-make run-prod
-```
 
 Open [http://fastapi.localhost/docs](http://fastapi.localhost/docs) with your browser to see the result.
 
@@ -61,4 +49,17 @@ Open [http://localhost:8000/docs](http://localhost:8000/docs) with your browser 
 
 
 
+Experimental installation :- 
+- Run the server ( using docker):
+
+```bash
+# Run locally with docker in dev mode and force build
+make run-dev-build
+# or
+# Run locally with docker in dev mode
+make run-dev
+# or
+# Run locally with docker in prod mode (Autorelod disabled)
+make run-prod
+```
 
