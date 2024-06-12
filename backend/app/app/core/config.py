@@ -103,6 +103,9 @@ class Graph:
 
     # <GetUserSnippet>
     async def get_user(self):
+        """
+        Used to display the user details
+        """
         # Only request specific properties using $select
         query_params = UserItemRequestBuilder.UserItemRequestBuilderGetQueryParameters(
             select=['displayName', 'mail', 'userPrincipalName']
@@ -120,6 +123,8 @@ class Graph:
     # <MakeGraphCallSnippet>
     async def list_files(self):
         """
+        This function is used to list all files in the root of the one drive
+        We can modify this to list all files in a specific location also
         """
         try:
             print("____________-")
@@ -162,6 +167,7 @@ class Graph:
     
     async def list_permissions(self, item_id: str = None):
         """
+        This function is used to list all permissions of the file specified
         """
         # result = await self.user_client.drives.by_drive_id(DRIVE_ID).items.by_drive_item_id(item_id).permissions.get()
 
@@ -194,7 +200,12 @@ class Graph:
             return None
         
  
-    async def create_subscription(self, item_id):
+    async def create_subscription(self):
+        """
+        This function is used to register a webhook
+        whenevr a file changes with permissions, this webhook is triggered
+        This is a one time thing, needs to be deleted if it has to be recreated
+        """
         try:
             request_body = Subscription(
                 change_type="updated",

@@ -65,12 +65,12 @@ async def get_download(item_id: str = None) -> JSONResponse:
 
 
 @router.get("/subscribe_permission_changes")
-async def get_download(item_id: str = None) -> JSONResponse:
+async def get_download() -> JSONResponse:
     """
     Gets Weather by city using sync work
     """
 
-    response = await graph.create_subscription(item_id)
+    response = await graph.create_subscription()
     return response
 
 
