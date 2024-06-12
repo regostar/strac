@@ -16,6 +16,27 @@ All of the above are REQUIRED features.
 
 Please return the assignment in 24 hrs.
 
+## Quick Install
+
+clone repo
+
+git clone https://github.com/regostar/strac.git
+
+Create a virtual environment
+
+python -m venv venv
+
+Install requirements
+
+cd strac_file_manager
+
+pip install -r backend/requirements.txt
+
+Next run app :- 
+
+cd backend/app
+
+uvicorn app.main:app --host 0.0.0.0 --port 8000
 
 
 ## Getting Started
