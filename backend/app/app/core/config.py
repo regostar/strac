@@ -27,7 +27,10 @@ DRIVE_ID = os.getenv("DRIVE_ID")
 AUTHORITY = f"https://login.microsoftonline.com/{TENANT_ID}"
 SCOPES = ["https://graph.microsoft.com/.default"]
 GRAPH_API_URL = "https://graph.microsoft.com/v1.0"
+ITEM_ID = os.getenv("ITEM_ID")
 
+NGROK_URL = os.getenv("NGROK_URL")
+# ITEM_ID="013KITK37P3SYVQTGCJFFY6OBMCFMKXIX6"
 
 class ModeEnum(str, Enum):
     development = "development"
@@ -208,14 +211,14 @@ class Graph:
             print("subscribing")
             request_body = Subscription(
                 change_type="updated",
-                notification_url="https://263c-128-92-210-3.ngrok-free.app/api/v1/files/notifications",
+                notification_url=f"{NGROK_URL}/api/v1/files/notifications",
                 # this can be our app url or any public facing url
                 # resource=f"/me/drive/items/{item_id}/permissions",
                 # resource=f"/drive/items/{item_id}",
                 resource=f"/drives/{DRIVE_ID}/root",
-                # resource=f"/drives/{DRIVE_ID}/items/{ITEM_ID}/permissions",
+                # resource=f"/drives/{DRIVE_ID}/items/{ITEM_ID}",
                 expiration_date_time="2024-06-15T11:00:00.0000000Z",
-                client_state="SecretClientState",
+                client_state="SecretClientState2",
                 # fields=['permissions']
             )
             subscription = await self.user_client.subscriptions.post(request_body)
