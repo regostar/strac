@@ -207,14 +207,15 @@ class Graph:
         This is a one time thing, needs to be deleted if it has to be recreated
         """
         try:
+            print("subscribing")
             request_body = Subscription(
                 change_type="updated",
-                notification_url="https://hooks.zapier.com/hooks/catch/19139951/2o9gf6p/",
+                notification_url="https://263c-128-92-210-3.ngrok-free.app/api/v1/files/notifications",
                 # this can be our app url or any public facing url
                 # resource=f"/me/drive/items/{item_id}/permissions",
                 # resource=f"/drive/items/{item_id}",
                 resource=f"/drives/{DRIVE_ID}/root",
-                expiration_date_time="2024-12-31T11:00:00.0000000Z",
+                expiration_date_time="2024-07-31T11:00:00.0000000Z",
                 client_state="SecretClientState",
                 # fields=['permissions']
             )
