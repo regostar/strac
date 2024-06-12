@@ -38,6 +38,31 @@ cd backend/app
 
 uvicorn app.main:app --host 0.0.0.0 --port 8000
 
+## For webhook public facing we need ngrok
+
+There are many ways to install and run this.
+
+I have done this :- 
+
+export NGROK_AUTHTOKEN=<shared in email>
+pip install ngrok
+
+python
+
+>>import ngrok
+
+>>listener = ngrok.forward(8001, authtoken_from_env=True)
+
+>>print(f"Ingress established at {listener.url()}")
+
+Now this url will be the webhook call back URL
+
+add this here
+https://github.com/regostar/strac/blob/731c398325e271e7eabc8857585688e9cf7f1b3d/backend/app/app/core/config.py#L213
+
+Now if we deploy this, we don't need to do this.
+
+Alternatively in the video I showed how we can use a webhook from Zapier and the subsequent email
 
 ## Getting Started
 
