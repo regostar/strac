@@ -2,6 +2,7 @@ from typing import Annotated
 from fastapi import APIRouter, Query, Request, HTTPException
 from fastapi.responses import RedirectResponse, JSONResponse
 import requests
+from fastapi.responses import PlainTextResponse
 
 
 from app.core.config import settings
@@ -62,3 +63,30 @@ async def get_download(item_id: str = None) -> JSONResponse:
     response = await graph.download_files(item_id)
     return response
 
+
+@router.get("/subscribe_permission_changes")
+async def get_download(item_id: str = None) -> JSONResponse:
+    """
+    Gets Weather by city using sync work
+    """
+
+    response = await graph.create_subscription(item_id)
+    return response
+
+
+# Handle notifications
+@router.post('/notifications')
+async def notifications(request: Request):
+    data = await request.json()
+    print(data)
+    return data, 202
+    # for value in data.get('value', []):
+
+
+# Validate subscription
+@router.get('/notifications')
+async def validate_subscription(request: Request):
+    validation_token = request.query_params.get('validationToken')
+    if validation_token:
+        return PlainTextResponse(validation_token)
+    return PlainTextResponse('', status_code=400)
