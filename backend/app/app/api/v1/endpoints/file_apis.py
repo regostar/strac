@@ -75,7 +75,7 @@ async def get_subscribe() -> JSONResponse:
 
 # Handle notifications
 @router.post('/notifications')
-async def notifications(validationToken: str):
+async def notifications(request: Request, validationToken: str):
     # data = await request.json()
     # print(data)
     # # return data, 202
@@ -86,7 +86,9 @@ async def notifications(validationToken: str):
     print(" validation_token = ", validationToken)
     if validationToken:
         return PlainTextResponse(validationToken)
-    return PlainTextResponse('', status_code=400)
+    data = await request.json()
+    print(data)
+    return data
 
 @router.get('/notifications')
 async def notifications2(validationToken: str):
