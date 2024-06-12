@@ -13,6 +13,7 @@ TENANT_ID = os.getenv("TENANT_ID")
 CLIENT_ID = os.getenv("CLIENT_ID")
 CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 GRAPH_SCOPES = os.getenv("GRAPH_SCOPES")
+DRIVE_ID = os.getenv("DRIVE_ID")
 AUTHORITY = f"https://login.microsoftonline.com/{TENANT_ID}"
 SCOPES = ["https://graph.microsoft.com/.default"]
 GRAPH_API_URL = "https://graph.microsoft.com/v1.0"
@@ -131,7 +132,8 @@ class Graph:
         # result3 = await self.user_client.drives.by_drive_id('b!czQGOZHvqEOTEy4x_SmYCIG9M8pAtuNNlGN_CDTa2gs2VzP_5Rd2Sr2hP4a4CmhG').items.by_drive_item_id('013KITK356Y2GOVW7725BZO354PWSELRRZ').children.get()
         # print(result3)
 
-        items = await self.user_client.drives.by_drive_id('b!czQGOZHvqEOTEy4x_SmYCIG9M8pAtuNNlGN_CDTa2gs2VzP_5Rd2Sr2hP4a4CmhG').items.by_drive_item_id('root').children.get()
+        # List all children in root of the one drive
+        items = await self.user_client.drives.by_drive_id(DRIVE_ID).items.by_drive_item_id('root').children.get()
         if items and items.value:
             for item in items.value:
                 print(item.id, item.name, item.size, item.folder, item.file)
@@ -144,6 +146,53 @@ class Graph:
             } for each in items.value], indent=4)
         return result_json
     # </MakeGraphCallSnippet>
+
+
+    async def download_files(self, item_id: str = None):
+        """
+        Documentation -
+        Returns a 302 Found response redirecting to a preauthenticated download URL for the file, 
+        which is the same URL available through the @microsoft.graph.downloadUrl property on the DriveItem.
+        To download the contents of the file your application needs to follow the Location header in the response. 
+        Many HTTP client libraries will automatically follow the 302 redirection and start downloading the file immediately.
+        """
+        result = await self.user_client.drives.by_drive_id(DRIVE_ID).items.by_drive_item_id(item_id).content.get()
+        print(result)
+        return result
+
+    
+    async def list_permissions(self, item_id: str = None):
+        """
+        """
+        # result = await self.user_client.drives.by_drive_id(DRIVE_ID).items.by_drive_item_id(item_id).permissions.get()
+
+        # # if result and result.value:
+        # #     for item in result.value:
+        # #         print(item.id, item.roles, item.grantedTo, item.link)
+        # print(result)
+        # result_json = json.dumps([{
+        #         'roles': each.roles,
+        #         'id': each.id,
+        #         "granted_to": each.granted_to,
+        #     } for each in result.value], indent=4)
+        # return [{
+        #         'roles': each.roles,
+        #         'id': each.id,
+        #         "granted_to": each.granted_to,
+        #     } for each in result.value]
+        # # return result_json
+        try:
+            # Fetch permissions of the specified item
+            permissions = await self.user_client.drives.by_drive_id(DRIVE_ID).items.by_drive_item_id(item_id).permissions.get()
+            
+            # Extract role, id, and username from the permissions
+            extracted_permissions = []
+            
+            return permissions.value
+
+        except Exception as e:
+            print(f"Error: {e}")
+            return None
 
 
 
