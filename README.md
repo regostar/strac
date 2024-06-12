@@ -18,6 +18,12 @@ Please return the assignment in 24 hrs.
 
 ## Quick Install
 
+Can watch this video to know how to setup the project 
+
+https://drive.google.com/file/d/13kaYB4ggZnzrobTw04U9miSw6A5zHohA/view?usp=drive_link
+
+Steps:-
+
 clone repo
 
 git clone https://github.com/regostar/strac.git
