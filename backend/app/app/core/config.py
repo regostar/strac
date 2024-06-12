@@ -5,6 +5,16 @@ from enum import Enum
 from msal import ConfidentialClientApplication
 from fastapi import HTTPException
 from dotenv import load_dotenv
+from configparser import SectionProxy
+from azure.identity import DeviceCodeCredential, ClientSecretCredential
+from msgraph import GraphServiceClient
+from msgraph.generated.users.item.user_item_request_builder import (
+    UserItemRequestBuilder,
+)
+import json
+from msgraph.generated.models.subscription import Subscription
+
+
 load_dotenv()
 print("TENANT_ID =  ", os.getenv("TENANT_ID"))
 
@@ -17,18 +27,6 @@ DRIVE_ID = os.getenv("DRIVE_ID")
 AUTHORITY = f"https://login.microsoftonline.com/{TENANT_ID}"
 SCOPES = ["https://graph.microsoft.com/.default"]
 GRAPH_API_URL = "https://graph.microsoft.com/v1.0"
-
-# MSAL application
-graph_client = ConfidentialClientApplication(
-    CLIENT_ID, authority=AUTHORITY, client_credential=CLIENT_SECRET
-)
-
-def get_access_token():
-    token_response = graph_client.acquire_token_for_client(scopes=SCOPES)
-    if "access_token" in token_response:
-        return token_response["access_token"]
-    else:
-        raise HTTPException(status_code=500, detail="Could not acquire access token")
 
 
 class ModeEnum(str, Enum):
@@ -50,33 +48,7 @@ class Settings(BaseSettings, extra='ignore'):
         case_sensitive = True
         env_file = os.path.expanduser("../../.env")
 
-
-
-
-
-# Copyright (c) Microsoft Corporation.
-# Licensed under the MIT License.
-
 # <UserAuthConfigSnippet>
-from configparser import SectionProxy
-from azure.identity import DeviceCodeCredential, ClientSecretCredential
-from msgraph import GraphServiceClient
-from msgraph.generated.users.item.user_item_request_builder import UserItemRequestBuilder
-from msgraph.generated.users.item.mail_folders.item.messages.messages_request_builder import (
-    MessagesRequestBuilder)
-from msgraph.generated.users.item.send_mail.send_mail_post_request_body import (
-    SendMailPostRequestBody)
-from msgraph.generated.models.message import Message
-from msgraph.generated.models.item_body import ItemBody
-from msgraph.generated.models.body_type import BodyType
-from msgraph.generated.models.recipient import Recipient
-from msgraph.generated.models.email_address import EmailAddress
-from msgraph.generated.models.o_data_errors.o_data_error import ODataError
-import json
-from msgraph.generated.models.subscription import Subscription
-
-
-
 class Graph:
     settings: SectionProxy
     device_code_credential: DeviceCodeCredential
@@ -128,6 +100,7 @@ class Graph:
         """
         try:
             print("____________-")
+            result = {"success": False}
             # List all children in root of the one drive
             items = await self.user_client.drives.by_drive_id(DRIVE_ID).items.by_drive_item_id('root').children.get()
             if items and items.value:
@@ -140,7 +113,14 @@ class Graph:
                     'id': each.id,
                     'web_url': each.web_url
                 } for each in items.value], indent=4)
-            return result_json
+            # return result_json
+                result = [{
+                        'name': each.name,
+                        'id': each.id,
+                        'web_url': each.web_url
+                    } for each in items.value]
+            return {"success": True, "data": result}
+        
         except Exception as e:
             print(f"Error: {e}")
             return None
@@ -215,7 +195,7 @@ class Graph:
                 # resource=f"/me/drive/items/{item_id}/permissions",
                 # resource=f"/drive/items/{item_id}",
                 resource=f"/drives/{DRIVE_ID}/root",
-                expiration_date_time="2024-07-31T11:00:00.0000000Z",
+                expiration_date_time="2024-06-15T11:00:00.0000000Z",
                 client_state="SecretClientState",
                 # fields=['permissions']
             )
