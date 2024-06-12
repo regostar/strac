@@ -78,7 +78,7 @@ Now if we deploy this, we don't need to do this.
 
 Alternatively in the video I showed how we can use a webhook from Zapier and the subsequent email
 
-## Getting Started
+## Alternative installations - 
 
 The commands in this documentation can be customized on the **Makefile**. It can be started with and without docker.
 
