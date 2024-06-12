@@ -1,4 +1,21 @@
-# FastAPI Project with `create-fastapi-project`
+# Assignmnet
+
+Below is the Take Home Assignment:
+
+Build a server-side app (preferably in Javascript/NodeJS) where you connect to One Drive and
+1. list files
+2. download files
+4. list all users who have access to the file
+5. It should also be real time where if users are added to the file, in real time, you get an event and you display the new users. Similarly, if users are removed from the file, you should be able to display the current list of users who have access to file.
+
+
+Provide a README file which tells a) what does your program do and b) how to execute it. Make it extremely easy so that our engineers can understand and execute the code. If they are not able to test the code in less than 10 minutes, the assignment will get REJECTED.
+
+Please provide loom video that a) executes all steps listed in your README, b) shows the demo of all above features, c) dives deep into the core parts of your code.
+All of the above are REQUIRED features.
+
+Please return the assignment in 24 hrs.
+
 
 This is a FastAPI project initialized using [`create-fastapi-project`](https://github.com/allient/create-fastapi-project), designed to provide a quick start for building APIs with [FastAPI](https://fastapi.tiangolo.com/).
 
@@ -38,37 +55,6 @@ make run-app
 
 Open [http://localhost:8000/docs](http://localhost:8000/docs) with your browser to see the result.
 
-You can start editing the server by modifying `app/main.py`.
 
-## Learn More
 
-To learn more about Fastapi, take a look at the following resources:
 
-- [Fastapi Documentation](https://fastapi.tiangolo.com/).
-- [fastapi-alembic-sqlmodel-async](https://github.com/jonra1993/fastapi-alembic-sqlmodel-async).
-- [full-stack-fastapi-postgresql](https://github.com/tiangolo/full-stack-fastapi-postgresql).
-- [sqlmodel-tutorial](https://sqlmodel.tiangolo.com/tutorial/fastapi/).
-- [asyncer-tutorial](https://asyncer.tiangolo.com/tutorial/).
-- [fastapi-pagination](https://github.com/uriyyo/fastapi-pagination).
-- [fastapi-best-practices](https://github.com/zhanymkanov/fastapi-best-practices).
-- [awesome-fastapi](https://github.com/mjhea0/awesome-fastapi).
-
-## Why use Create FastAPI Project?
-
-`create-fastapi-project` provides a streamlined way to kickstart your FastAPI projects. Here are some compelling reasons to choose it for your project setup:
-
-### Interactive Experience
-
-Running `pip install create-fastapi-project@latest` (with no arguments) launches an interactive experience that guides you through the process of setting up your project. This interactive approach simplifies the initial configuration and gets you started quickly.
-
-### Zero Dependencies
-
-`create-fastapi-project` has been designed to be lightweight and efficient. It requires zero external dependencies, ensuring that your project remains unburdened by unnecessary packages.
-
-### Reliability and Maintenance
-
-`create-fastapi-project` is officially maintained by the [Allient development team](https://www.allient.io/). It is well-tested and aligns with best practices, ensuring that it functions as expected and remains up to date with FastAPI's releases.
-
-By choosing `create-fastapi-project`, you streamline your initial project setup, leverage reliable patterns, and enjoy the convenience of a tool tailored for FastAPI development.
-
-We love ❤️ [FastAPI](https://fastapi.tiangolo.com/) and its ecosystem. You can check out the [create-fastapi-project GitHub repository](https://github.com/allient/create-fastapi-project) - your feedback and contributions are welcome!
