@@ -14,8 +14,6 @@ router = APIRouter()
 api_reference: dict[str, str] = {"api_reference": "https://github.com/chubin/wttr.in"}
 
 
-
-
 # @router.get("/list")
 # async def list_files() -> JSONResponse:
 #     """
@@ -56,8 +54,7 @@ async def get_permissions_of_file(item_id: str = None) -> JSONResponse:
 
 @router.get("/download")
 async def get_download(item_id: str = None) -> JSONResponse:
-    """download a file
-    """
+    """download a file"""
 
     response = await graph.download_files(item_id)
     return response
@@ -74,7 +71,7 @@ async def get_subscribe() -> JSONResponse:
 
 
 # Handle notifications
-@router.post('/notifications')
+@router.post("/notifications")
 async def notifications(request: Request, validationToken: str):
     # data = await request.json()
     # print(data)
@@ -90,7 +87,8 @@ async def notifications(request: Request, validationToken: str):
     print(data)
     return data
 
-@router.get('/notifications')
+
+@router.get("/notifications")
 async def notifications2(validationToken: str):
     # data = await request.json()
     # print(data)
@@ -102,7 +100,7 @@ async def notifications2(validationToken: str):
     print(" validation_token = ", validationToken)
     if validationToken:
         return PlainTextResponse(validationToken)
-    return PlainTextResponse('', status_code=400)
+    return PlainTextResponse("", status_code=400)
 
     # for value in data.get('value', []):
 
