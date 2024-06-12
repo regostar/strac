@@ -63,16 +63,27 @@ async def get_download(item_id: str = None) -> JSONResponse:
 @router.get("/subscribe_permission_changes")
 async def get_subscribe() -> JSONResponse:
     """
-    Gsubscribe to permission changes
+    subscribe to permission changes
     """
     print("came to subscribe")
     response = await graph.create_subscription()
     return response
 
 
+@router.get("/unsubscribe")
+async def unsubscribe(subscription_id: str) -> JSONResponse:
+    """
+    Un subscribe to permission changes
+    """
+    print("came to unsubscribe")
+    response = await graph.delete_subscription(subscription_id)
+    return response
+
+
+
 # Handle notifications
 @router.post("/notifications")
-async def notifications(request: Request, validationToken: str):
+async def notifications(request: Request, validationToken: str= None):
     # data = await request.json()
     # print(data)
     # # return data, 202

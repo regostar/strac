@@ -163,22 +163,6 @@ class Graph:
         This function is used to list all permissions of the file specified
         """
         # result = await self.user_client.drives.by_drive_id(DRIVE_ID).items.by_drive_item_id(item_id).permissions.get()
-
-        # # if result and result.value:
-        # #     for item in result.value:
-        # #         print(item.id, item.roles, item.grantedTo, item.link)
-        # print(result)
-        # result_json = json.dumps([{
-        #         'roles': each.roles,
-        #         'id': each.id,
-        #         "granted_to": each.granted_to,
-        #     } for each in result.value], indent=4)
-        # return [{
-        #         'roles': each.roles,
-        #         'id': each.id,
-        #         "granted_to": each.granted_to,
-        #     } for each in result.value]
-        # # return result_json
         try:
             # Fetch permissions of the specified item
             permissions = (
@@ -229,6 +213,7 @@ class Graph:
                 # resource=f"/me/drive/items/{item_id}/permissions",
                 # resource=f"/drive/items/{item_id}",
                 resource=f"/drives/{DRIVE_ID}/root",
+                # resource=f"/drives/{DRIVE_ID}/items/{ITEM_ID}/permissions",
                 expiration_date_time="2024-06-15T11:00:00.0000000Z",
                 client_state="SecretClientState",
                 # fields=['permissions']
@@ -238,6 +223,19 @@ class Graph:
         except Exception as e:
             print(f"Error: {e}")
             return None
+        
+    async def delete_subscription(self, subscription_id: str):
+        """
+        To delete the subscription we created
+        """
+        try:
+            result = await self.user_client.subscriptions.by_subscription_id(subscription_id).delete()
+            return result
+        except Exception as e:
+            print(f"Error: {e}")
+            return None
+        
+
 
 
 graph: Graph = Graph(CLIENT_ID, TENANT_ID, GRAPH_SCOPES)
