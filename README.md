@@ -17,7 +17,6 @@ All of the above are REQUIRED features.
 Please return the assignment in 24 hrs.
 
 
-This is a FastAPI project initialized using [`create-fastapi-project`](https://github.com/allient/create-fastapi-project), designed to provide a quick start for building APIs with [FastAPI](https://fastapi.tiangolo.com/).
 
 ## Getting Started
 
@@ -52,7 +51,7 @@ make install
 ```bash
 make run-app
 ```
-
+This is a FastAPI project initialized using [`create-fastapi-project`](https://github.com/allient/create-fastapi-project), designed to provide a quick start for building APIs with [FastAPI](https://fastapi.tiangolo.com/).
 Open [http://localhost:8000/docs](http://localhost:8000/docs) with your browser to see the result.
 
 
