@@ -51,6 +51,11 @@ make install
 ```bash
 make run-app
 ```
+pip install requirements 
+
+uvicorn app.main:app --host 0.0.0.0 --port 8001
+
+
 This is a FastAPI project initialized using [`create-fastapi-project`](https://github.com/allient/create-fastapi-project), designed to provide a quick start for building APIs with [FastAPI](https://fastapi.tiangolo.com/).
 Open [http://localhost:8000/docs](http://localhost:8000/docs) with your browser to see the result.
 
